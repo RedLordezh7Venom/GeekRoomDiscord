@@ -404,7 +404,7 @@ async def ques(ctx:disnake.ApplicationCommandInteraction,topic):
     if (not isallowed(ctx)):
         await ctx.send(usagewarn,ephemeral=True)
         return
-    ctx.response.defer()
+    await ctx.response.defer()
     promt = "send me a " + topic + " question to solve"
   
     text = await riddle_of_theday.generate_response_with_text(promt)
