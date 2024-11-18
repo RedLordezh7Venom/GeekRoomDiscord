@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from datetime import datetime,timedelta
 import riddle_of_theday
 import links 
+import keep_alive
 
 
 load_dotenv()
@@ -420,9 +421,9 @@ async def ques(ctx:disnake.ApplicationCommandInteraction,topic):
       await ctx.send(string)
 
 
-
-    
-Bot.run(TOKEN)
+if __name__ == '__main__':
+    keep_alive.keep_alive() 
+    Bot.run(TOKEN)
 
 
 #==========================================================================================================Embed Linkspanel alternative======================================================================================
