@@ -417,7 +417,7 @@ async def ques(ctx:disnake.ApplicationCommandInteraction,topic):
 
     # Send each part as a separate message
     for string in messages:
-      await ctx.channel.send(string)
+      await ctx.send(string)
 
 
 
