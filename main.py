@@ -278,7 +278,7 @@ async def links(inter: disnake.ApplicationCommandInteraction):
 
 @Bot.slash_command(name="say", description="Send a message in a channel, (admin only)")
 @commands.has_permissions(administrator=True)  # Require admin permissions
-async def say(inter: disnake.ApplicationCommandInteraction, channel_id , message: str):
+async def say(inter: disnake.ApplicationCommandInteraction, channel_id:int , message: str):
     channel = Bot.get_channel(channel_id)
     
     # Check if the channel exists
