@@ -420,6 +420,26 @@ async def ques(ctx:disnake.ApplicationCommandInteraction,topic):
     for string in messages:
       await ctx.send(string)
 
+import threading
+import time
+
+def ping_site():
+    """Periodically pings the site to keep it alive."""
+    while True:
+        try:
+            response = requests.get("https://geekroomdiscord.onrender.com/")
+            if response.status_code == 200:
+                print("Successfully pinged the site!")
+            else:
+                print(f"Failed to ping the site. Status code: {response.status_code}")
+        except Exception as e:
+            print(f"An error occurred while pinging the site: {e}")
+        time.sleep(300)  # Wait for 5 minutes (300 seconds)
+
+# Start the pinging thread
+thread = threading.Thread(target=ping_site)
+thread.daemon = True  # Ensures the thread exits when the main program exits
+thread.start()
 
 if __name__ == '__main__':
     keep_alive.keep_alive() 
