@@ -26,7 +26,7 @@ Bot = commands.Bot(
 qotdtarget = int(os.getenv('QOTD_TARGET'))#1116378200096907264#fill in  #varxqotd 
 riddlechannel = int(os.getenv('RIDDLECHANNEL'))
 #ID of role that gets pinged when posting a question, leave blank string if no role should be pinged
-pingrole = os.getenv('PINGROLE') #Member role ID for @DSA  #varxmember
+pingrole = ' '  #os.getenv('PINGROLE') #Member role ID for @DSA  #varxmember
 memechannel = int(os.getenv('MEMECHANNEL'))
 
 #Hour QOTD is to be posted
