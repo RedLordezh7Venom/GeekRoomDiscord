@@ -130,11 +130,11 @@ async def task():
         channel = Bot.get_channel(memechannel)
         await channel.send(embed=postmeme(channel))
 
-        topicdict = {'Artificial Intelligence & Machine Learning':os.getenv('AICHANNEL'),
-                     'Cybersecurity':os.getenv('CYBCHANNEL'),
-                     'Robotics & IOT':os.getenv('IOTCHANNEL'),
+        topicdict = {'Artificial Intelligence & Machine Learning':int(os.getenv('AICHANNEL')),
+                     'Cybersecurity':int(os.getenv('CYBCHANNEL')),
+                     'Robotics & IOT':int(os.getenv('IOTCHANNEL')),
                      'DSA, Problem Solving and Aptitute':riddlechannel,
-                     'Web Development':os.getenv('WEBDEVCHANNEL')}
+                     'Web Development':int(os.getenv('WEBDEVCHANNEL'))}
         for topic,channel in topicdict.items():
             await riddle_of_theday.question_post(Bot.get_channel(int(channel)),topic) #Riddle post
         #question_post function posts DSA, whereas riddle_of_theday.question_post posts riddles            
