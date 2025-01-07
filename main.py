@@ -5,6 +5,7 @@ from disnake.ext import commands
 from dotenv import load_dotenv
 from datetime import datetime,timedelta
 import riddle_of_theday
+import json
 import links 
 import keep_alive
 
@@ -28,7 +29,7 @@ riddlechannel = int(os.getenv('RIDDLECHANNEL'))
 #ID of role that gets pinged when posting a question, leave blank string if no role should be pinged
 pingrole = os.getenv('PINGROLE') #Member role ID for @DSA  #varxmember
 memechannel = int(os.getenv('MEMECHANNEL'))
-
+DATE_FILE = "last_posted_date.json"
 #Hour QOTD is to be posted
 posttime = int(os.getenv('POSTTIME'))
 ADMIN_ROLE_NAME  = ["Moderator","admin","core","GOD","coordinator"]
@@ -88,8 +89,7 @@ async def question_post(channel):
     if pingrole == "":
         await channel.send(embed=embed)
     else:
-        await channel.send(f"<@&{riddles_role.id}>", embed=embed)
-    message = channel.last_message
+        message = await channel.send(f"<@&{riddles_role.id}>", embed=embed)
     await message.create_thread(
         name=f"'{title}'",
         auto_archive_duration=60)
@@ -97,7 +97,20 @@ async def question_post(channel):
     print(f'{Bot.user} has posted a qotd!')
 
 
-last_posted_date = None
+def read_last_posted_date():
+    if os.path.exists(DATE_FILE):
+        with open(DATE_FILE, "r") as file:
+            data = json.load(file)
+            return datetime.strptime(data["date"], "%Y-%m-%d").date()
+    return None
+
+# Helper function to write the last posted date to the file
+def write_last_posted_date(date):
+    with open(DATE_FILE, "w") as file:
+        json.dump({"date": date.strftime("%Y-%m-%d")}, file)
+
+# Initialize the last posted date
+last_posted_date = read_last_posted_date()
 #Scheduled to call question of the day.
 def postmeme(channel):
     try:
@@ -118,7 +131,7 @@ def postmeme(channel):
     except Exception as e:
         print(e)
         return "Failed to fetch meme. Please try again later."
-
+print(last_posted_date,posttime)
 @tasks.loop(hours = 1)
 async def task():
     global last_posted_date
@@ -127,6 +140,7 @@ async def task():
         channel = Bot.get_channel(qotdtarget)
         await question_post(channel) #daily DSA
         last_posted_date = current_date
+        write_last_posted_date(current_date)
         channel = Bot.get_channel(memechannel)
         await channel.send(embed=postmeme(channel))
 
