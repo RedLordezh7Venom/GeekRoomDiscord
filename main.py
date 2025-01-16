@@ -233,12 +233,12 @@ async def send(inter: disnake.ApplicationCommandInteraction,subject):
             description=f"An error occurred: {str(e)}",
             color=0xff0000,
         )
-     try:
+    try:
             # Edit the original response if deferred
-            await inter.edit_original_response(embed=error_embed)
-        except disnake.InteractionResponded:
-            # Send a new response if editing isn't possible
-            await inter.followup.send(embed=error_embed, ephemeral=True)
+        await inter.edit_original_response(embed=error_embed)
+    except disnake.InteractionResponded:
+     # Send a new response if editing isn't possible
+        await inter.followup.send(embed=error_embed, ephemeral=True)
 
 #==================================================================================================Links=======================================================================================
 #reduce redundancy with global_options
