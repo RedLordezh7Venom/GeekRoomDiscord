@@ -335,47 +335,75 @@ async def say_error(inter: disnake.ApplicationCommandInteraction, error):
         )
         await inter.send(embed=embed)
 
-@Bot.slash_command(name="summarise", description="Summarise chat upto a week - admin only")
-@commands.has_permissions(administrator=True) 
+@Bot.slash_command(name="summarise", description="Summarise chat up to a week - admin only")
+@commands.has_permissions(administrator=True)
 async def summarise(inter, channel_id):
-    await inter.response.defer()  # Defer the interaction first
-    
-    channel = Bot.get_channel(int(channel_id))
-    
-    # Calculate the start and end dates for the week
-    end_date = datetime.now()  # Current local date and time
-    start_date = end_date - timedelta(days=7)  # 7 days ago
-    last_week = True
-    summary = ''
-    # Fetch messages within the week
-    async for message in channel.history(limit=None, after=start_date, before=end_date):
-            print(message.content)
-            summary += f"{message.author.name}:{message.content}\n"
-    
-    if not summary:
-        last_week = False
-        print("No messages in the last 7 days, fetching the last 20 messages.")
-        summary = ''  # Reset summary
-        async for message in channel.history(limit=20):  # Limit set to 20
-            print(message.content)
+    try:
+        await inter.response.defer()  # Defer the interaction first
+        
+        channel = Bot.get_channel(int(channel_id))
+        if not channel:
+            raise ValueError(f"Channel with ID {channel_id} not found.")
+
+        # Calculate the start and end dates for the week
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=7)
+        last_week = True
+        summary = ''
+
+        # Fetch messages within the week
+        async for message in channel.history(limit=None, after=start_date, before=end_date):
             summary += f"{message.author.name}: {message.content}\n"
-    
-    await riddle_of_theday.summarise(inter.channel,summary)
-    embed = disnake.Embed(
-        title = f"Success!",
-        description = f"Summarised text for the time period {start_date} to {end_date}" if last_week else f"Summarised the last 20 messages",
-        colour = embedcolor,
-    )
-    await inter.send(embed = embed)
+
+        # If no messages found in the last 7 days, fetch the last 20 messages
+        if not summary:
+            last_week = False
+            async for message in channel.history(limit=20):  # Limit set to 20
+                summary += f"{message.author.name}: {message.content}\n"
+
+        # Generate and send the summary
+        await riddle_of_theday.summarise(inter.channel, summary)
+
+        description = (
+            f"Summarised messages from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}."
+            if last_week else
+            "Summarised the last 20 messages."
+        )
+        embed = disnake.Embed(
+            title="Success!",
+            description=description,
+            colour=embedcolor,
+        )
+        await inter.followup.send(embed=embed)
+
+    except ValueError as e:
+        await inter.followup.send(
+            f"Error: {str(e)}",
+            ephemeral=True,  # Only visible to the user
+        )
+
+    except Exception as e:
+        await inter.followup.send(
+            "An unexpected error occurred. Please try again later.",
+            ephemeral=True,
+        )
+        print(f"Error in summarise command: {e}")
+
 @summarise.error
-async def say_error(inter: disnake.ApplicationCommandInteraction, error):
+async def summarise_error(inter: disnake.ApplicationCommandInteraction, error):
     if isinstance(error, commands.MissingPermissions):
         embed = disnake.Embed(
             title="Permission Denied!",
             description="This command is admin-only.",
             color=0xff0000,
         )
-        await inter.send(embed=embed)
+        await inter.response.send_message(embed=embed, ephemeral=True)
+    else:
+        await inter.response.send_message(
+            "An unexpected error occurred while processing your request.",
+            ephemeral=True,
+        )
+
 
 def is_invite_link(content):
     return "discord.gg" in content or "discord.com/invite" in content
