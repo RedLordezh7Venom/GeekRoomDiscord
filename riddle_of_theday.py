@@ -108,14 +108,16 @@ async def question_post(channel, subject,daily=True):
 
     # Create the cleaned text based on the subject
     #if user query, Riddle:{riddle text}
-    riddletext = "Daily Riddle"
-    if daily == False:
-       riddletext = "Riddle"
+    riddletext = "Daily Riddle"if daily else "Riddle"
 
-    cleaned_text = f"send a daily riddle on the following topic: {subject}. Do not give the answer, only the question. The title should be \"{riddletext} - {subject}\":"
+    cleaned_text = (
+        f"Generate a unique and creative riddle related to the topic '{subject}'. "
+        f"The riddle should be challenging yet solvable and relevant to the subject. "
+        f"Ensure it has not been used before, and avoid repeating previous riddles. "
+        f"Include only the riddle as the response, with the title: \"{riddle_type} - {subject}\"."
+    )
     
-    
-    # Generate the response text
+
     response_text = await generate_response_with_text(cleaned_text)
     
     # Add AI response to history
