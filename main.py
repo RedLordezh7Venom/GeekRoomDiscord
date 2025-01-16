@@ -209,17 +209,13 @@ async def send(inter: disnake.ApplicationCommandInteraction,subject):
     if (not isallowed(inter)):
         await inter.send(usagewarn,ephemeral=True)
         return
+     
     await inter.response.defer()
     try:
-        # Check if the interaction has already been deferred or responded
-        if not inter.response.is_done():
-            await inter.response.defer()
-        
         channel = inter.channel
         if channel is None:
             raise ValueError(f"Channel not found")
-
-        # Assume riddle_of_theday.question_post(channel) is a function that posts the riddle
+        # post riddle
         await riddle_of_theday.question_post(channel, subject, False)
 
         embed = disnake.Embed(
@@ -228,12 +224,7 @@ async def send(inter: disnake.ApplicationCommandInteraction,subject):
             color=embedcolor,
         )
         
-        # Only edit the response if it has been deferred
-        if inter.response.is_done():
-            await inter.edit_original_response(embed=embed)
-        else:
-            # Send the response directly if it hasn't been deferred
-            await inter.send(embed=embed)
+        await inter.edit_original_response(embed=embed)
     
     except Exception as e:
         # Handle any errors and respond appropriately
@@ -242,7 +233,12 @@ async def send(inter: disnake.ApplicationCommandInteraction,subject):
             description=f"An error occurred: {str(e)}",
             color=0xff0000,
         )
-        await inter.edit_original_response(embed=error_embed)  # This will work after the response has been deferred
+     try:
+            # Edit the original response if deferred
+            await inter.edit_original_response(embed=error_embed)
+        except disnake.InteractionResponded:
+            # Send a new response if editing isn't possible
+            await inter.followup.send(embed=error_embed, ephemeral=True)
 
 #==================================================================================================Links=======================================================================================
 #reduce redundancy with global_options
