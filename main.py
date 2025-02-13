@@ -150,12 +150,12 @@ async def task():
                      'DSA, Problem Solving and Aptitute':riddlechannel,
                      'Web Development':int(os.getenv('WEBDEVCHANNEL'))}
         
-         if random.random() < 0.6:
-            for topic, channel in topicdict.items():
-             await riddle_of_theday.ques(Bot.get_channel(int(channel)), topic)
-         else:
-          for topic,channel in topicdict.items():
-           await riddle_of_theday.question_post(Bot.get_channel(int(channel)),topic) #Riddle post
+         for topic, channel in topicdict.items():
+          
+          if random.random() < 0.6:
+           await riddle_of_theday.ques(Bot.get_channel(int(channel)), topic)  # Riddle post
+          else:
+           await riddle_of_theday.question_post(Bot.get_channel(int(channel)), topic)
 
         #question_post function posts DSA, whereas riddle_of_theday.question_post posts riddles            
 
