@@ -149,8 +149,14 @@ async def task():
                      'Robotics & IOT':int(os.getenv('IOTCHANNEL')),
                      'DSA, Problem Solving and Aptitute':riddlechannel,
                      'Web Development':int(os.getenv('WEBDEVCHANNEL'))}
-        for topic,channel in topicdict.items():
-            await riddle_of_theday.question_post(Bot.get_channel(int(channel)),topic) #Riddle post
+        
+         if random.random() < 0.6:
+            for topic, channel in topicdict.items():
+             await riddle_of_theday.ques(Bot.get_channel(int(channel)), topic)
+         else:
+          for topic,channel in topicdict.items():
+           await riddle_of_theday.question_post(Bot.get_channel(int(channel)),topic) #Riddle post
+
         #question_post function posts DSA, whereas riddle_of_theday.question_post posts riddles            
 
 #Make sure bot is online.
