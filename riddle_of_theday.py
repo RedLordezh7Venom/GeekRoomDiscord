@@ -95,13 +95,6 @@ progress = 0
 #===============================================================================Daily Riddle posting=======================================================================
  
 async def question_post(channel, subject,daily=True):
-    """
-    Parameters:
-    - channel: The channel where the message will be sent.
-    - subject: The topic for the riddle (e.g., 'Web Development', 'Cybersecurity','AI).
-    """
-    # Validate the subject to ensure it's one of the allowed topics
-    # Sub commands/ options to choose from can be added later if required
     # allowed_subjects = ['Web Development', 'Cybersecurity', 'DSA','AI','ML','Programming history','Robotics','IOT']
     # if subject not in allowed_subjects:
     #     raise ValueError("Invalid subject. Allowed subjects are: 'Web Development', 'Cybersecurity', 'DSA'.")
@@ -124,6 +117,16 @@ async def question_post(channel, subject,daily=True):
     await split_and_send_messages(channel, response_text, 1700)
 
     return
+    
+async def ques(channel, subject,daily=True):
+    promt = "send me a " + subject + " question to solve"
+  
+    text = await generate_response_with_text(promt)
+    messages = []
+    
+    await split_and_send_messages(channel,response_text,1700)
+    return
+
 #==========================================================================================================================================================================
 #================================================================================Chat summary function ===================================================================
 async def summarise(channel,message):
