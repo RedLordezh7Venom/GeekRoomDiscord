@@ -149,9 +149,8 @@ async def task():
                      'Robotics & IOT':int(os.getenv('IOTCHANNEL')),
                      'DSA, Problem Solving and Aptitute':riddlechannel,
                      'Web Development':int(os.getenv('WEBDEVCHANNEL'))}
-        
+     
          for topic, channel in topicdict.items():
-          
           if random.random() < 0.6:
            await riddle_of_theday.ques(Bot.get_channel(int(channel)), topic)  # Riddle post
           else:
