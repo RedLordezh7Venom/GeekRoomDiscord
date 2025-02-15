@@ -104,9 +104,8 @@ async def question_post(channel, subject,daily=True):
     riddletext = "Daily Riddle"if daily else "Riddle"
 
     cleaned_text = (
-        f"Generate a unique and creative riddle related to the topic '{subject}'. "
-        f"The riddle should be short  and relevant to the subject. "
-        f"Ensure it has not been used before, and avoid repeating previous riddles. "
+        f"Generate a unique and creative riddle from the topic '{subject}'. "
+        f"The riddle should be short and can be anything related to the topic. "
         f"Include only the riddle as the response, with the title: \"{riddletext} - {subject}\"."
     )
     
@@ -122,9 +121,8 @@ async def ques(channel, subject,daily=True):
     promt = "send me a " + subject + " question to solve"
   
     text = await generate_response_with_text(promt)
-    messages = []
     
-    await split_and_send_messages(channel,response_text,1700)
+    await split_and_send_messages(channel,text,1700)
     return
 
 #==========================================================================================================================================================================

@@ -1,6 +1,7 @@
-flask
 disnake
 python-dotenv
 discord
 google-generativeai
 beautifulsoup4
+uvicorn
+fastapi
