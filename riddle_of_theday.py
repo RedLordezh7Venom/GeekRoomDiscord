@@ -43,7 +43,7 @@ image_generation_config = {
 #     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
 #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
 # }]
-text_model = genai.GenerativeModel(model_name="gemini-pro",
+text_model = genai.GenerativeModel(model_name="gemini-2.0-flash-lite",
                                    generation_config=text_generation_config,
                                    #safety_settings=safety_settings
                                    )
