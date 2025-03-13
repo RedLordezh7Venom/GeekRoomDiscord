@@ -107,6 +107,7 @@ async def question_post(channel, subject,daily=True):
         f"Generate a unique and creative riddle from the topic '{subject}'. "
         f"The riddle should be short and can be anything related to the topic. "
         f"Include only the riddle as the response, with the title: \"{riddletext} - {subject}\"."
+        f"Give only riddle and don't include extra text like  here you go or whatever, start your response with riddle "
     )
     
 
