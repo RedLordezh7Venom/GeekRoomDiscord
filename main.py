@@ -65,7 +65,7 @@ async def question_post(channel):
     description = random_question.find("div").text.strip()
     description_cleaned = description.replace('\u230a', '')  # Replace problematic Unicode character
     #Prettify the text
-    description_cleaned = await riddle_of_theday.generate_response_with_text("Prettify the following description to be sent in a discord embed : " + description_cleaned)
+    description_cleaned = await riddle_of_theday.generate_response_with_text("Prettify the following description with markdown to be sent in a discord embed : " + description_cleaned)
     
     # Construct the problem link
     title_with_hyphens = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '-').lower()
