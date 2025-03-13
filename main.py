@@ -458,7 +458,7 @@ async def ques(ctx:disnake.ApplicationCommandInteraction,topic):
         await ctx.send(usagewarn,ephemeral=True)
         return
     await ctx.response.defer()
-    promt = "send me a " + topic + " question to solve"
+    promt = "send me a " + topic + " question to solve , only send question and no other text"
   
     text = await riddle_of_theday.generate_response_with_text(promt)
     messages = []
